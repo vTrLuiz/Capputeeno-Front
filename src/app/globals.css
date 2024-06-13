@@ -1,0 +1,31 @@
+:root {
+  --border-radius: 12px;
+  --logo-color:#5D5D6D;
+  --bg-secundary:#F3F5F6;
+  --text-dark:#737380;
+  --text-dark-2:#41414D;
+  --shapes-dark:#09090A;
+  --shapes: #DCE2e6;
+  --delete-color: #DE3838;
+  --orange-low: #FFA585;
+  --bg-primary: #f0f0f5;
+  --secundary-text: #617480;
+  --buy-color: #51B853;
+
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+li{
+  list-style: none;
+}
