@@ -11,10 +11,10 @@ import { useDeferredValue } from "react"
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string 
 
 const fetcher = (query: string): AxiosPromise<ProductsFetchResponse> => {
-    return axios.post(API_URL, { query });
-}
-
-
+  return axios.get(API_URL, {
+    params: { query }
+  });
+};
 
 export function useProducts(){
   const { type, priority, search } = useFilter()
