@@ -37,16 +37,16 @@ const FilterItem = styled.li<FilterItemProps>`
 
 
 export function FilterByType(){
-    const {type, setType} = useFilter();
+    const {category, setCategory} = useFilter();
 
     const handleChangeType = (value: FilterType) => {
-        setType(value)
+        setCategory(value)
     }
     return(
         <FilterList>
-            <FilterItem selected={type === FilterType.ALL} onClick={() =>  handleChangeType(FilterType.ALL)}>Todos os produtos</FilterItem>
-            <FilterItem selected={type === FilterType.SHIRT} onClick={() => handleChangeType(FilterType.SHIRT)}>Camisetas</FilterItem>
-            <FilterItem selected={type === FilterType.MUGS} onClick={() => handleChangeType(FilterType.MUGS)}>Canecas</FilterItem>
+            <FilterItem selected={category === FilterType.ALL} onClick={() =>  handleChangeType(FilterType.ALL)}>Todos os produtos</FilterItem>
+            <FilterItem selected={category === FilterType.SHIRT} onClick={() => handleChangeType(FilterType.SHIRT)}>Camisetas</FilterItem>
+            <FilterItem selected={category === FilterType.MUGS} onClick={() => handleChangeType(FilterType.MUGS)}>Canecas</FilterItem>
         </FilterList>
     )
 }

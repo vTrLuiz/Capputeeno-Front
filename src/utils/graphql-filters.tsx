@@ -12,9 +12,22 @@ export function getFieldByPriority(priority: PriorityTypes){
     if(priority === PriorityTypes.MAIOR_PRECO)  return {field: "price_in_cents", order: "ASC"}
     if(priority === PriorityTypes.MENOR_PREÇO) return {field: "price_in_cents", order: "DSC"}
     return {field: "created_at", order: "DSC"}
+  }
+  
+  export const mountQuery = (type: FilterType, priority: PriorityTypes) => {
+  const categoryFilter = getCategoryByType(type)
+  const sortSettings = getFieldByPriority(priority)
+  const searchParams = new URLSearchParams()
+  if (categoryFilter){
+    searchParams.set("category", categoryFilter)
+  }
+
+  if (priority) {
+    searchParams.set("sortField", sortSettings.field);
+    searchParams.set("sortOrder", sortSettings.order);
 }
 
-export const mountQuery = (type: FilterType, priority: PriorityTypes) => {
+  return searchParams.toString()
     if(type === FilterType.ALL && priority === PriorityTypes.POPULARIDADE) return `query {
         allProducts(sortField: "sales", sortOrder: "DSC") {
           id
@@ -24,8 +37,6 @@ export const mountQuery = (type: FilterType, priority: PriorityTypes) => {
         }
       }
     `
-    const sortSettings = getFieldByPriority(priority) 
-    const categoryFilter = getCategoryByType(type)
     return `
     query {
         allProducts(sortField: "${sortSettings.field}", sortOrder: "${sortSettings.order}", ${categoryFilter ? `filter: { category: "${categoryFilter}"}`: ''}) {
