@@ -5,10 +5,7 @@ import { BackBtn } from "@/components/Back-button"
 import { useProduct } from "../hooks/useProduct"
 import { formatValue } from "@/utils/format-price"
 import { BagIcon } from "../icon/bag-icon"
-import { useQuery } from "@tanstack/react-query"
 
-interface ProductProps {
-}
 
 const Container = styled.div`
     display: flex;
@@ -128,7 +125,6 @@ export default function Product({ searchParams }: { searchParams: { id: string }
             localStorage.setItem('cart-items', JSON.stringify(newcartItems))
         }
     }
-
 
     return (
         <DefaultPageLayout>
