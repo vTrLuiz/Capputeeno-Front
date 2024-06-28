@@ -6,13 +6,14 @@ import axios, { AxiosResponse } from "axios"
 import { useFilter } from "./use-filter"
 import { mountQuery } from "@/utils/graphql-filters"
 import { useDeferredValue, useEffect } from "react"
+import { Product } from "@/types/products"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
 
 
-const fetcher = (query : string): Promise<AxiosResponse<ProductsFetchResponse>> => {
-  return axios.get(`${API_URL}/products?${query}`);
+const fetcher = async (query : string): Promise<AxiosResponse<ProductsFetchResponse>> => {
+  return await axios.get(`${API_URL}/products?${query}`);
 };
 
 
@@ -29,12 +30,11 @@ export function useProducts(){
 
   useEffect(() => {
     if (searchDeferred.length){
-    
     }
   }, [searchDeferred]);
   
   const products =  data?.data  
   return {
-    data: products
+    data: products as Product[] | undefined,
   }
 }
