@@ -64,8 +64,6 @@ li + li {
 export function FilterByPriority(props: FilterByPriorityProps) {
     const [isOpen, setIsOpen] = useState(false)
     const {setPriority} = useFilter()
-    
-    // debugger;
     const handleUpdatePriority = (value : PriorityTypes ) => {
         setPriority(value)
         setIsOpen(false)

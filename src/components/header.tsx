@@ -1,10 +1,7 @@
 "use client"
 import { Saira_Stencil_One } from 'next/font/google'
 import styled from 'styled-components'
-import { PrimaryInput, PrimaryInputWSearchIcon } from './primary-input'
-import { useRouter } from "next/navigation";
-import { CartIcon } from '../app/icon/cart-icon';
-import { SearchIcon } from '../app/icon/search-icon';
+import { PrimaryInputWSearchIcon } from './primary-input'
 import { CartControl } from './Cart-control';
 import { useFilter } from '@/app/hooks/use-filter';
 

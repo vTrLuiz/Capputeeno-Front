@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Saira } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
-import { FilterContextProvider } from "./contexts/filter-context";
 import StyledComponentsRegistry from "./registry";
 import { DefaultProviders } from "@/components/default-Provider";
 

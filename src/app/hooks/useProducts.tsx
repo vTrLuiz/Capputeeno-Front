@@ -1,16 +1,17 @@
+"use client"
+
 import { ProductsFetchResponse } from "@/types/products-response"
 import { useQuery } from "@tanstack/react-query"
 import axios, { AxiosResponse } from "axios"
 import { useFilter } from "./use-filter"
 import { mountQuery } from "@/utils/graphql-filters"
 import { useDeferredValue, useEffect } from "react"
-import { Product } from "@/types/products"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
 
 
-const fetcher = (query : string): Promise<AxiosResponse<Product>> => {
+const fetcher = (query : string): Promise<AxiosResponse<ProductsFetchResponse>> => {
   return axios.get(`${API_URL}/products?${query}`);
 };
 
@@ -25,12 +26,15 @@ export function useProducts(){
     staleTime: 1000 * 60 * 1
   })
 
-  useEffect(() => {
-    refetch();
-  }, [searchDeferred]);
 
-  // const products =  data?.data 
+  useEffect(() => {
+    if (searchDeferred.length){
+    
+    }
+  }, [searchDeferred]);
+  
+  const products =  data?.data  
   return {
-    data: data?.data as Product[] | undefined
+    data: products
   }
 }
