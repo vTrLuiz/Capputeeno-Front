@@ -6,7 +6,7 @@ import styled from "styled-components"
 
 interface CartItemProps {
     product: ProductInCart
-    handleUpdateQuantity: (id: number, quantity: number) => void 
+    handleUpdateQuantity: (id: string, quantity: number) => void
     handleDelete: (id: string) => void
 }
 
@@ -16,9 +16,15 @@ const Item = styled.li`
     justify-content: center;
     height: 210px;
 
-    border-radius: 8px;
-    background-color: white;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--shapes);
+    background-color: var(--bg-card);
+    transition: box-shadow var(--transition);
     
+    &:hover {
+        box-shadow: 0 4px 16px rgba(48, 46, 43, 0.08);
+    }
+
     position: relative;
 
     button {
@@ -29,12 +35,17 @@ const Item = styled.li`
         border: none;
         background: transparent;
         cursor: pointer;
+        opacity: 0.6;
+        transition: opacity var(--transition);
+
+        &:hover { opacity: 1; }
     }
 
     img {
         max-height: 100%;
         width: 256px;
-        border-radius: 8px 0 0 8px;
+        border-radius: calc(var(--border-radius) - 1px) 0 0 calc(var(--border-radius) - 1px);
+        object-fit: cover;
     }
 
     > div {
@@ -56,6 +67,7 @@ const Item = styled.li`
         p {
             font-weight: 400;
             font-size: 12px;
+            color: var(--text-dark);
             max-height: 50%;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -70,19 +82,27 @@ const Item = styled.li`
             span {
                 font-weight: 600;
                 font-size: 16px;
-                color: var(--shapes-dark);
+                color: var(--accent-brown);
             }
         }
     }
 `
     const SelectQuantity = styled.select`
-    padding: 8px;
-    border: 1.5px solid var(--text-dark);
-    border-radius: 8px;
-    background-color: #F3F5F6;
-    color: var(--text-dark);
+    padding: 8px 12px;
+    border: 1.5px solid var(--shapes);
+    border-radius: 6px;
+    background-color: var(--bg-secundary);
+    color: var(--text-dark-2);
+    font-family: inherit;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--transition);
+
+    &:focus {
+        border-color: var(--accent-brown);
+    }
 `
 
 

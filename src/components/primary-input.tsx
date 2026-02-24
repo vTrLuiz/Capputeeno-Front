@@ -4,19 +4,29 @@ import { SearchIcon } from "../app/icon/search-icon";
 
 export const PrimaryInput = styled.input`
 width: 100%;
-border-radius: 8px;
-padding: 10px 16px;
+border-radius: 6px;
+padding: 10px 40px 10px 16px;
 background-color: var(--bg-secundary);
 font-family: inherit;
 font-size: 12px;
 font-weight: 400;
-line-height: 20px; /* 157.143% */
-color: var(--text-dark);
-border: none;
+line-height: 20px;
+color: var(--text-dark-2);
+border: 1px solid transparent;
+outline: none;
+transition: border-color var(--transition);
+
+&:focus {
+    border-color: var(--accent-brown);
+}
+
+&::placeholder {
+    color: var(--text-dark);
+}
+
     @media (min-width: 768px) {
         font-size: 14px;
-        line-height: 22px; /* 157.143% */
-
+        line-height: 22px;
     }
 `
 

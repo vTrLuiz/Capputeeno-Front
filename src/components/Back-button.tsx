@@ -14,7 +14,13 @@ const Button = styled.button`
     font-weight: 500;
     font-size: 14px;
     line-height: 150%;
-    color: var(--secondary-text);
+    color: var(--text-dark);
+    transition: color var(--transition);
+    letter-spacing: 0.5px;
+
+    &:hover {
+        color: var(--text-dark-2);
+    }
 `
 
 interface BtnProps {

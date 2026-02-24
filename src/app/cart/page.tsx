@@ -3,11 +3,12 @@
 import styled from "styled-components";
 import { BackBtn } from "@/components/Back-button";
 import { DefaultPageLayout } from "@/components/default-page-layout";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { ProductInCart } from "@/types/products";
+import { useCart } from "../contexts/cart-context";
 import { formatValue } from "@/utils/format-price";
 import { CartItem } from "@/components/Cart/cart-item";
 import { Divider } from "@/components/divider";
+import { EmptyState } from "@/components/empty-state";
+import Link from "next/link";
 
 
 
@@ -27,10 +28,11 @@ const Container = styled.div`
 const CartListContainer = styled.div`
 
   h3 {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 500;
         line-height: 150%;
         text-transform: uppercase;
+        letter-spacing: 1px;
         color: var(--text-dark-2);
         margin-top: 24px;
     }
@@ -39,10 +41,11 @@ const CartListContainer = styled.div`
         font-weight: 300;
         font-size: 16px;
         line-height: 150%;
-        color: var(--text-dark-2);
+        color: var(--text-dark);
 
         span {
             font-weight: 600;
+            color: var(--accent-brown);
         }
     }
 `;
@@ -63,17 +66,20 @@ const CartResume = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     min-width: 352px;
-    padding: 16px 24px;
+    padding: 24px 28px;
     margin-top: 1px;
 
-    background: white;
+    background: var(--bg-card);
+    border: 1px solid var(--shapes);
+    border-radius: var(--border-radius);
 
     h3 {
         font-weight: 600;
-        font-size: 20px;
+        font-size: 18px;
         color: var(--text-dark-2);
         text-transform: uppercase;
-        margin-bottom: 30px;
+        letter-spacing: 1px;
+        margin-bottom: 24px;
     }
 `;
 
@@ -108,93 +114,104 @@ const BuyButton = styled.button`
     height: 44px;
     background: var(--buy-color);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 15px;
     color: white;
     text-transform: uppercase;
+    letter-spacing: 1.5px;
     cursor: pointer;
+    transition: opacity var(--transition), transform var(--transition);
 
+    &:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+    }
 
 `
 
+const EmptyCartButton = styled(Link)`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    background: var(--buy-color);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+    &:hover { opacity: 0.88; }
+`
+
 export default function CartPage() {
-    const { value, updateLocalStorage } = useLocalStorage<ProductInCart[]>('cart-items', [])
+    const { items, removeFromCart, updateQuantity } = useCart()
 
-    const calculateTotal = (value: ProductInCart[]) => {
-        return value.reduce((sum, item) => sum += (item.price_in_cents * item.quantity), 0)
-    }
-    const total = formatValue(calculateTotal(value))
+    const calculateTotal = () =>
+        items.reduce((sum, item) => sum + item.price_in_cents * item.quantity, 0)
 
-    const taxaEntrega = 4000
-    
-    const entrega = formatValue(calculateTotal(value) + taxaEntrega);
-
-    const handleUpdateQuantity = (id: number, quantity: number) => {
-        const newValue = value.map(item => {
-            if (String(id) === item.id.toString()) {
-                return { ...item, quantity }
-            }
-            return item
-        }
-        )
-        updateLocalStorage(newValue)
-    }
-    const handleRemoveItem = (id: string) => {
-        const newValue = value.filter(item => {
-            if (item.id !== id) return item
-        })
-        updateLocalStorage(newValue)
-    }
+    const subtotal = calculateTotal()
+    const total = formatValue(subtotal)
+    const FREE_SHIPPING_THRESHOLD = 12000
+    const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD
+    const taxaEntrega = freeShipping ? 0 : 4000
+    const entrega = formatValue(subtotal + taxaEntrega)
+    const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
 
     return (
         <DefaultPageLayout>
+            {items.length === 0 ? (
+                <EmptyState
+                    icon="🛍️"
+                    title="Seu carrinho está vazio"
+                    subtitle="Explore nossos produtos e adicione o que você curtir."
+                    action={<EmptyCartButton href="/">Ver produtos</EmptyCartButton>}
+                />
+            ) : (
             <Container>
                 <CartListContainer>
                     <BackBtn navigate="/" />
                     <h3>Seu Carrinho</h3>
                     <p>
-                        Total de {value.length} itens
+                        Total de {totalItems} {totalItems === 1 ? 'item' : 'itens'}
                         <span> {total} </span>
                     </p>
 
                     <CartList>
-                        {value.map(item =>
+                        {items.map(item =>
                             <CartItem
                                 product={item}
                                 key={item.id}
-                                handleDelete={handleRemoveItem}
-                                handleUpdateQuantity={handleUpdateQuantity}
+                                handleDelete={removeFromCart}
+                                handleUpdateQuantity={updateQuantity}
                             />)}
                     </CartList>
                 </CartListContainer>
                 <CartResume>
                     <h3>Resumo do Pedido</h3>
                     <TotalCart isBold={false}>
-                        <p>
-                            Subtotal de produtos
-                        </p>
+                        <p>Subtotal de produtos</p>
                         <span>{total}</span>
-
-                        </TotalCart>
-                        <TotalCart isBold={false} >
-                        <p>
-                            Entrega
-                        </p>
-                        <span>{formatValue(taxaEntrega)}</span>
+                    </TotalCart>
+                    <TotalCart isBold={false}>
+                        <p>Entrega</p>
+                        <span style={freeShipping ? { color: 'var(--buy-color)', fontWeight: 600 } : undefined}>
+                            {freeShipping ? 'Grátis 🎉' : formatValue(taxaEntrega)}
+                        </span>
                     </TotalCart>
                     <Divider />
                     <TotalCart isBold={true}>
-                        <p>
-                            Total
-                        </p>
-                        <span> {entrega}</span>
+                        <p>Total</p>
+                        <span>{entrega}</span>
                     </TotalCart>
                     <BuyButton>
                         Finalizar A Compra
                     </BuyButton>
                 </CartResume>
             </Container>
+            )}
         </DefaultPageLayout>
     )
 }

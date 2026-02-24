@@ -8,10 +8,12 @@ export const FilterContext = createContext({
     page: 0,
     category: FilterType.ALL,
     priority: PriorityTypes.NOVOS,
+    priceMax: 10000,
     setPriority: (value: PriorityTypes ) => {},
     setSearch: (value: string) => {},
     setPage: (value: number) => {},
     setCategory: (value: FilterType) => {},
+    setPriceMax: (value: number) => {},
 })
 
 interface ProviderProps {
@@ -23,6 +25,7 @@ export function FilterContextProvider({ children }: ProviderProps){
     const [page, setPage] = useState(0)
     const [category, setCategory] = useState(FilterType.ALL)
     const [priority, setPriority] = useState(PriorityTypes.POPULARIDADE)
+    const [priceMax, setPriceMax] = useState(10000)
 
     return(
         <FilterContext.Provider
@@ -33,7 +36,9 @@ export function FilterContextProvider({ children }: ProviderProps){
                 setCategory, 
                 setPage,
                 priority,
-                setPriority
+                setPriority,
+                priceMax,
+                setPriceMax,
             }}>
             {children}
         </FilterContext.Provider>

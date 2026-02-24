@@ -5,6 +5,9 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import StyledComponentsRegistry from "./registry";
 import { DefaultProviders } from "@/components/default-Provider";
+import { BackToTop } from "@/components/back-to-top";
+import { FreeShippingBar } from "@/components/free-shipping-bar";
+import { CartDrawer } from "@/components/cart-drawer";
 
 const saira = Saira({
   weight: ['300', '400', '500', '600'],
@@ -29,7 +32,10 @@ export default function RootLayout({
         <DefaultProviders>
 
         <Header/>
+        <FreeShippingBar />
         {children}
+        <BackToTop />
+        <CartDrawer />
         
         </DefaultProviders>
         </StyledComponentsRegistry>

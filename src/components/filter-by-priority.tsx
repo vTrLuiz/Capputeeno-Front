@@ -25,10 +25,13 @@ display: flex;
     font-size: 14px;
     line-height: 22px;
     color: var(--text-dark);
+    transition: color var(--transition);
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:hover { color: var(--text-dark-2); }
 
     svg {
       margin-left: 8px;
@@ -37,16 +40,17 @@ display: flex;
 `
 
 const PriorityFilter = styled.ul`
-box-shadow: 0px 4px 12px rgba(0,0,0, 0.1);
-width: 180px;
+box-shadow: 0 4px 16px rgba(48, 46, 43, 0.12);
+width: 190px;
 position: absolute;
-padding: 12px 16px;
-border-radius: 4px;
-background: rgb(255, 255, 255);
+padding: 10px 0;
+border-radius: var(--border-radius);
+border: 1px solid var(--shapes);
+background: var(--bg-card);
 z-index: 999;
 list-style: none;
-top: 100%;
-right: 8px;
+top: calc(100% + 6px);
+right: 0;
 
 li{
     color: var(--text-dark);
@@ -54,10 +58,14 @@ li{
     font-size: 14px;
     line-height: 22px;
     cursor: pointer;
-}
-li + li {
-        margin-top: 4px;
+    padding: 6px 16px;
+    transition: background var(--transition), color var(--transition);
+
+    &:hover {
+        background: var(--bg-secundary);
+        color: var(--text-dark-2);
     }
+}
 
 `
 

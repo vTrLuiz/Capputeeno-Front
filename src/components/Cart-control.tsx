@@ -1,19 +1,21 @@
 import styled from "styled-components"
-import { useLocalStorage } from "@/app/hooks/useLocalStorage"
-import { useRouter } from "next/navigation";
+import { useCart } from "@/app/contexts/cart-context"
 import { CartIcon } from "../app/icon/cart-icon";
 
 
 const CartCount = styled.span`
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
     border-radius: 100%;
     padding: 0px 5px;
-    font-size: 12px;
-    background-color: var(--delete-color);
-    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    background-color: var(--orange-low);
+    color: #fff;
     margin-left: -8px;
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const Container = styled.div`
@@ -26,17 +28,13 @@ const Container = styled.div`
 `
 
 export function CartControl(){
-    const router = useRouter()
-    const { value } = useLocalStorage('cart-items', [])
-
-    const handleNavigateToCart = () => {
-        router.push("/cart")
-    }
+    const { items, openDrawer } = useCart()
+    const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
 
     return (
-        <Container onClick={handleNavigateToCart}>
+        <Container onClick={openDrawer} title="Abrir carrinho">
             <CartIcon/>
-            {value.length > 0 && <CartCount>{value.length}</CartCount>}
+            {totalItems > 0 && <CartCount>{totalItems}</CartCount>}
         </Container>
     )
 }
